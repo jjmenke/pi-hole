@@ -1,4 +1,4 @@
-> ___Set-up instructions to get [Pi-Hole](https://pi-hole.net/), [Recursive local DNS](https://docs.pi-hole.net/guides/unbound/), and a [WireGaurd](https://www.wireguard.com/) running on a Rasberry Pi Zero w___
+> ___Set-up instructions to get [Pi-Hole](https://pi-hole.net/), [Recursive local DNS](https://docs.pi-hole.net/guides/unbound/), and [WireGaurd](https://www.wireguard.com/) for security (and ad blocking) while away from home. All running on a Rasberry Pi Zero w___
 
 # Basic Pi-Hole Installation (via headless SSH install)
 1. Download [Raspbery Pi OS Lite](https://www.raspberrypi.org/downloads/raspberry-pi-os/)
