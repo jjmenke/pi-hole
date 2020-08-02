@@ -208,6 +208,30 @@ It's a little unlcear based on all the random internet postings whether this is 
     ```
 1. Need to troubleshoot? [check here](https://medium.com/swlh/setting-up-gmail-and-other-email-on-a-raspberry-pi-6f7e3ad3d0e)
 
+1. Setup a [disk space monitor](https://www.cyberciti.biz/tips/shell-script-to-watch-the-disk-space.html)
+    ```bash
+    sudo nano /opt/diskAlert
+
+    #!/bin/sh
+    df -H | grep -vE '^Filesystem|tmpfs|cdrom' | awk '{ print $5 " " $1 }' | while read output;
+    do
+    echo $output
+    usep=$(echo $output | awk '{ print $1}' | cut -d'%' -f1  )
+    partition=$(echo $output | awk '{ print $2 }' )
+    if [ $usep -ge 90 ]; then
+        echo "Running out of space \"$partition ($usep%)\" on $(hostname) as on $(date)" |
+        mail -s "Alert: Almost out of disk space $usep%" you@somewhere.com
+    fi
+    done
+
+    ...
+    sudo chmod 755 /opt/diskAlert
+
+    sudo crontab -e
+    # run disk alert check, but only email on alert (not job)
+    0 8 * * *   /opt/diskAlert >/dev/null 2>&1
+    ```
+
 # Configure VPN (WireGaurd)
 1. Install [PiVPN](https://www.pivpn.io/)
     ```bash
