@@ -96,10 +96,17 @@
     ...
     service unbound restart
     ```
+1. Use cloudflare for local DNS lookups in case of a power outage
+    ```bash
+    sudo nano /etc/resolv.conf
+    nameserver 1.1.1.1
+    nameserver 1.0.0.1
+    ```
+
 1. Configure a time sync fall back so that DNSSEC will continue to work after a power outage
     ```bash
     sudo nano /etc/systemd/timesyncd.conf
-    FallbackNTP=pool.ntp.org 64.142.54.12 64.22.253.15
+    FallbackNTP=pool.ntp.org
     ```
 1. ✅**Make sure `Use DNSSEC` is off in pi-hole [DNS settings](http://pi.hole/admin/settings.php?tab=dns)** or you'll be doing an unecessary double DNSEC lookup
 
