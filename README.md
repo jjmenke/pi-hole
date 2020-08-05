@@ -274,3 +274,17 @@ It's a little unlcear based on all the random internet postings whether this is 
 
 
 ## ...All done! 🎉
+
+# Troubleshooting
+- need to bypass DNS?
+```bash
+sudo nano /etc/resolv.conf
+nameserver 1.1.1.1
+```
+
+- fix pihole
+```bash
+pihole -r
+pihole -up
+pihole checkout master
+```
