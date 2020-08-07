@@ -67,14 +67,7 @@
     ...
     sudo service pihole-FTL restart
     ```
-1. Use Unbound cache instead of pi-hole's
-    ```bash
-    sudo nano /etc/dnsmasq.d/01-pihole.conf
-    #Make this zero, so that pi-hole always forwards non-blocked lookups
-    cache-size=0
-    ...
-    pihole restartdns
-    ```
+    
 1. Turn up the unboud caching
     ```bash
     sudo nano /etc/unbound/unbound.conf
@@ -110,9 +103,12 @@
     ```
 1. ✅**Make sure `Use DNSSEC` is off in pi-hole [DNS settings](http://pi.hole/admin/settings.php?tab=dns)** or you'll be doing an unecessary double DNSEC lookup
 
-7. [Use DNS Perf Test](https://github.com/cleanbrowsing/dnsperftest/) to make sure DNS is fast - should be fast or faster then Google and Cloudflare (~40ms)
-    - Initial before/after went from `58.70ms to 41.90ms` after the changes above
+1. uncheck `Never forward non-FQDNs` and `Never forward reverse lookups for private IP ranges`
 
+1. Run namebench to make sure everything is fast
+    ```bash
+    namebench -i alexa -x -O 192.168.1.2 1.1.1.1 8.8.8.8
+    ```
 #### Resources
 [Into the Pi-Hole you should go - 8 months later](https://www.reddit.com/r/pihole/comments/dezyvy/into_the_pihole_you_should_go_8_months_later/)
 
@@ -295,3 +291,28 @@ pihole -r
 pihole -up
 pihole checkout master
 ```
+
+- monitor disk usage
+```bash
+sudo iotop -aoP
+```
+
+- use namebench to test results
+```bash
+namebench -i alexa -x -O 192.168.1.2 1.1.1.1 8.8.8.8
+```
+
+```
+Fastest individual response (in milliseconds):
+----------------------------------------------
+SYS-192.168.1.2  ############################ 4.66490
+8.8.8.8          ##################################################### 8.87704
+1.1.1.1          ##################################################### 8.97503
+
+Mean response (in milliseconds):
+--------------------------------
+SYS-192.168.1.2  ########################## 20.86
+1.1.1.1          ################################## 27.86
+8.8.8.8          ##################################################### 43.75
+```
+
