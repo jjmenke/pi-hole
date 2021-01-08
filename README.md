@@ -99,7 +99,8 @@
 1. Configure a time sync fall back so that DNSSEC will continue to work after a power outage
     ```bash
     sudo nano /etc/systemd/timesyncd.conf
-    FallbackNTP=pool.ntp.org
+    NTP=pool.ntp.org
+    FallbackNTP=129.6.15.28 129.6.15.29 129.6.15.30 132.163.97.1 132.163.97.2
     ```
 1. ✅**Make sure `Use DNSSEC` is off in pi-hole [DNS settings](http://pi.hole/admin/settings.php?tab=dns)** or you'll be doing an unecessary double DNSEC lookup
 
@@ -211,6 +212,8 @@ It's a little unlcear based on all the random internet postings whether this is 
     ```
 1. Need to troubleshoot? [check here](https://medium.com/swlh/setting-up-gmail-and-other-email-on-a-raspberry-pi-6f7e3ad3d0e)
 
+1. Setup a `.forward` file in the pi and root home folders
+
 1. Setup a [disk space monitor](https://www.cyberciti.biz/tips/shell-script-to-watch-the-disk-space.html)
     ```bash
     sudo nano /opt/diskAlert
@@ -270,6 +273,16 @@ It's a little unlcear based on all the random internet postings whether this is 
     sudo ddclient -query
     # Match the output ip with your google domain console
     ```
+# Change MOTD on login
+```bash
+sudo nano /etc/motd
+clear it out
+```
+put [scripts](https://github.com/jjmenke/raspberrypi-motd) in : `cd /etc/update-motd.d`
+
+https://www.raspberrypi.org/forums/viewtopic.php?t=23440
+
+SSH keys: https://www.raspberrypi.org/documentation/remote-access/ssh/passwordless.md
 
 #### Resources
 [Dynamic DNS Raspberry Pi](https://affan.info/google-domain-ddns-raspberry-pi-or-linux-systems/)
@@ -278,7 +291,21 @@ It's a little unlcear based on all the random internet postings whether this is 
 
 ## ...All done! 🎉
 
-# Troubleshooting
+## Troubleshooting
+
+# Show time status
+timedatectl
+
+# show last NTP sync
+systemctl status systemd-timesyncd.service
+-or-
+timedatectl show-timesync
+
+# force NTP sync
+sudo systemctl restart systemd-timesyncd
+
+https://www.linuxuprising.com/2019/07/how-to-set-timezone-and-enable-network.html
+
 - need to bypass DNS?
 ```bash
 sudo nano /etc/resolv.conf
@@ -316,3 +343,38 @@ SYS-192.168.1.2  ########################## 20.86
 8.8.8.8          ##################################################### 43.75
 ```
 
+- Turn off logging
+```bash
+sudo nano /etc/pihole/pihole-FTL.conf
+MAXDBDAYS=0
+...
+sudo service pihole-FTL restart
+
+pihole -l off
+```
+
+- Check NTP status
+```bash
+timedatectl status
+- or -
+timedatectl show-timesync
+```
+
+
+```
+timedatectl show-timesync --all
+timedatectl set-ntp true 
+timedatectl status
+
+switch DNS:
+sudo nano /etc/resolv.conf
+```
+
+
+https://appcodelabs.com/how-to-backup-clone-a-raspberry-pi-sd-card-on-macos-the-easy-way
+
+https://medium.com/better-programming/backing-up-your-raspberry-pi-sd-card-on-mac-the-simple-way-398a630f899c
+
+https://howchoo.com/g/ztqymgezm2u/create-a-backup-image-of-your-raspberry-pi-sd-card-in-mac-osx
+
+https://raspberrypi.stackexchange.com/questions/40647/can-i-backup-my-sd-card-with-disk-utility-on-osx
