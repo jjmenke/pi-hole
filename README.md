@@ -5,7 +5,7 @@
 1. Download [Etcher](https://www.balena.io/etcher/)
 1. Flash OS to miroSD with Etcher
 1. Enable SSH on boot by creating a blank `ssh` file in the root SSD dir
-    ```basg
+    ```bash
     cd /Volumes/BOOT
     touch ssh
     ```
@@ -27,10 +27,14 @@
 1. Turn on the Rasberry PI and update it
     ```bash
     ssh pi@raspberrypi.local
-    sudo apt-get update && sudo apt-get upgrade -y 
+    # password is 'raspberry'
+
+    sudo apt-get full-upgrade
     
+    sudo reboot now
+
     # configure local and timezone
-    sudo raspi-config raspi-config
+    sudo raspi-config
 
     # change the password
     passwd
