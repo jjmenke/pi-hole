@@ -70,6 +70,7 @@
     DBINTERVAL=15
     
     # allows for chrome to quickly ignore a bad url
+    # https://docs.pi-hole.net/ftldns/blockingmode/#pi-holes-nxdomain-blocking
     BLOCKINGMODE=NXDOMAIN
     ...
     sudo service pihole-FTL restart
