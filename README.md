@@ -68,6 +68,9 @@
     MAXDBDAYS=90
     # only write to disk every 15mins
     DBINTERVAL=15
+    
+    # allows for chrome to quickly ignore a bad url
+    BLOCKINGMODE=NXDOMAIN
     ...
     sudo service pihole-FTL restart
     ```
@@ -373,6 +376,8 @@ timedatectl status
 switch DNS:
 sudo nano /etc/resolv.conf
 ```
+### List Management
+Use `pihole5-list-tool` to update lists
 
 
 https://appcodelabs.com/how-to-backup-clone-a-raspberry-pi-sd-card-on-macos-the-easy-way
